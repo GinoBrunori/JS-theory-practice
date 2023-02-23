@@ -1,0 +1,45 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  background-color: rgb(11, 11, 46);
+}
+
+h1 {
+    color: aliceblue;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.divButton {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid red;
+    /* margin: auto; */
+    
+}
+
+.buttonClickMe {
+  padding: 20px;
+  background-color: rgb(6, 160, 83);
+  border-radius: 22px;
+  cursor: pointer;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+}
+
+.cambiarColor {
+    background-color: red;
+}
+
+.buttonOperadores {
+    width: 50px;
+    height: 20px;
+    background-color: slateblue;
+    cursor: pointer;
+}

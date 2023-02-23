@@ -1,0 +1,42 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+main {
+  background-color: rgb(128, 127, 127);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  padding: 40px 50px;
+  font-size: 1.5rem;
+  border-radius: 70vh;
+  border: none;
+}
+
+button:hover {
+  background-color: rgb(29, 29, 29);
+  color: beige;
+}
+
+/* ------------------------------- estilo dark ------------------------------ */
+/* luego se le agrega a body la clase dark  */
+.dark main {
+  background-color: rgb(29, 25, 25);
+}
+
+.dark button {
+  background-color: rgb(36, 160, 53);
+  color: rgb(255, 255, 255);
+}
+
+.dark button:hover {
+  background-color: rgb(66, 66, 66);
+}
