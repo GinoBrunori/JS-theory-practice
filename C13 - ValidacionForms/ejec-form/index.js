@@ -54,14 +54,15 @@ function eliminarEspacio(input) {
   return input.trim();
 }
 
-
+let valueInputEmail = inputEmail.value
+let valueInputPassword = inputPassword.value
 /* -------------------------------------------------------------------------- */
 
 function validarTodo() {
   // console.log("Hola")
   iniciandoSesion.classList.add("hidden");
 
-  if (validarEmail(valueInputEmail) && buscarEmail(valueInputEmail) && validarPassword(valueInputPassword) && buscarContraseña(eliminarEspacio(valueInputPassword))){
+  if (validarEmail(inputEmail.value.trim()) && buscarEmail(inputEmail.value.trim()) && validarPassword(inputPassword.value.trim()) && buscarContraseña(eliminarEspacio(inputPassword.value.trim()))){
      ocultarForm()
   } else {
      mostrarErrores();
@@ -140,8 +141,7 @@ form.addEventListener("submit", function (e) {
   setTimeout(validarTodo, 1000);
 });
 
-let valueInputEmail = inputEmail.value
-let valueInputPassword = inputPassword.value
+
 /* -------------------------------------------------------------------------- */
 /*                              funciones utiles                              */
 /* -------------------------------------------------------------------------- */
@@ -160,7 +160,22 @@ const h1 = document.querySelector("h1");
 function ocultarForm() {
   form.classList.add("hidden");
   h1.innerText = "Bienvenido al sitio";
+  buttonVolver.classList.remove('hidden')
+
 }
+
+const buttonVolver = document.querySelector('.button-volver')
+console.log(buttonVolver);
+
+function volverAlForm(){
+  form.classList.remove('hidden')
+  h1.innerText = "Iniciar Sesión"
+  buttonVolver.classList.add('hidden')
+}
+
+buttonVolver.addEventListener('click', function(){
+  volverAlForm()
+})
 /* -------------------------------------------------------------------------- */
 // Paso a paso:
 
