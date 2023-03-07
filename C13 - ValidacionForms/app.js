@@ -1,20 +1,20 @@
 const form = document.querySelector("form");
-console.log(form);
+// console.log(form);
 
 const inputEmail = document.querySelector(".fila input#email");
-console.log(inputEmail);
+// console.log(inputEmail);
 
 const inputPassword = document.querySelector(".fila input#password");
-console.log(inputPassword);
+// console.log(inputPassword);
 
 const inputSelect = document.querySelector(".fila select#rol");
-console.log(inputSelect);
+// console.log(inputSelect);
 
 const inputCondiciones = document.querySelector(".condiciones input#legal");
-console.log(inputCondiciones);
+// console.log(inputCondiciones);
 
 const divErrores = document.querySelector("div.errores");
-console.log(divErrores);
+// console.log(divErrores);
 
 const datosUsuario = {
   email: "",
@@ -70,7 +70,7 @@ form.addEventListener("submit", function (e) {
   // reiniciamos los errores para que no se sigan renderizando
   errores = [];
 
-  console.log(datosUsuario);
+  // console.log(datosUsuario);
   // console.log("datosUsuario");
 });
 

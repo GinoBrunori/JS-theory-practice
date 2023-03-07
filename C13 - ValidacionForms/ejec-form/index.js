@@ -25,7 +25,7 @@ const baseDeDatos = {
       email: "julianne.oconner@kory.org",
       password: "MysuperPassword345",
     },
-  ]
+  ],
 };
 
 // console.log(baseDeDatos.usuarios[0].name);
@@ -36,96 +36,130 @@ const baseDeDatos = {
 /* -------------------------------------------------------------------------- */
 /*                              capturo los nodos                             */
 /* -------------------------------------------------------------------------- */
-const form = document.querySelector('form');
-const inputEmail = document.querySelector('.input-container #email-input')
-const inputPassword = document.querySelector('.input-container #password-input')
+const form = document.querySelector("form");
+const inputEmail = document.querySelector(".input-container #email-input");
+const inputPassword = document.querySelector(
+  ".input-container #password-input"
+);
 
-const iniciandoSesion = document.querySelector('#status-container #loader');
-const errorContainer = document.querySelector('#status-container #error-container');
+const iniciandoSesion = document.querySelector("#status-container #loader");
+const errorContainer = document.querySelector(
+  "#status-container #error-container"
+);
 
-// console.log(form, inputEmail, inputPassword, iniciandoSesion, errorContainer);
 /* -------------------------------------------------------------------------- */
-const valueInputEmail = elimianarEspacio(inputEmail.value);
-const valueInputPassword = elimianarEspacio(inputPassword.value);
+/*                     NORMALIZAMOS EL EMAIL & CONTRASEÑA                     */
+/* -------------------------------------------------------------------------- */
+function eliminarEspacio(input) {
+  return input.trim();
+}
 
-// const usuarios = 
 
-function validarTodo(){
+/* -------------------------------------------------------------------------- */
+
+function validarTodo() {
   // console.log("Hola")
-  iniciandoSesion.classList.add('hidden');
+  iniciandoSesion.classList.add("hidden");
 
-  if (valueInputEmail === "" || buscarEmail(valueInputEmail) === true){
-    mostrarErrores()
+  if (validarEmail(valueInputEmail) && buscarEmail(valueInputEmail) && validarPassword(valueInputPassword) && buscarContraseña(eliminarEspacio(valueInputPassword))){
+     ocultarForm()
   } else {
-    ocultarForm()
+     mostrarErrores();
   }
-  
-  // if (valueInputPassword === "" || valueInputPassword.length < 5 || valueInputPassword != buscarContraseña(valueInputPassword)) {
-  //   mostrarErrores()
+}
+
+  // if (validarPassword(valueInputPassword) && buscarContraseña(valueInputPassword)) {
+  //   ocultarForm();
   // } else {
-  //   ocultarForm()
+  //   mostrarErrores();
   // }
+// }
 
- 
+/* -------------------------------------------------------------------------- */
+/*                                validar email & contaseña                            */
+/* -------------------------------------------------------------------------- */
+function validarEmail(email) {
+  let resultado = false;
+
+  if (
+    email.includes("@") &&
+    email.length > 3 &&
+    email.includes(".com") &&
+    !email.includes(" ")
+  ) {
+    resultado = true;
+  }
+  return resultado;
 }
 
-function buscarEmail(valueInput){
-  baseDeDatos.usuarios.forEach( (usuario, index) => {
-    if(valueInput == usuario.email){
-      return "true";
-    } 
-  })
+console.log;
+
+function validarPassword(password) {
+  let resultado = false;
+
+  if (password.length > 5) {
+    resultado = true;
+  }
+  return resultado;
 }
+/* -------------------------------------------------------------------------- */
 
-console.log(buscarEmail(baseDeDatos.usuarios[1].email))
-  // baseDeDatos.usuarios.forEach( (item,index) => {
-    
-  //   console.log(`${item.name} + ${index}` )
-  // })
+/* -------------------------------------------------------------------------- */
+/*           funciones para buscar el mail y contraseña en el objeto          */
+/* -------------------------------------------------------------------------- */
+function buscarEmail(valueInput) {
+  let resultado = false;
 
-// console.log(buscarEmail(baseDeDatos.usuarios[0].email))
-
-function buscarContraseña(valueInput){
-  baseDeDatos.usuarios.forEach( (usuario, index) => {
-    if(valueInput === usuario[index].password){
-      return valueInput;
+  baseDeDatos.usuarios.forEach((usuario) => {
+    if (valueInput === usuario.email) {
+      resultado = true;
     }
-  })
+  });
+  return resultado;
 }
 
+function buscarContraseña(valueInput) {
+  let resultado = false;
 
+  baseDeDatos.usuarios.forEach((usuario) => {
+    if (valueInput === usuario.password) {
+      resultado = true;
+    }
+  });
+  return resultado;
+}
 
-form.addEventListener("submit", function(e){
-  e.preventDefault()
+/* -------------------------------------------------------------------------- */
 
-  iniciandoSesion.classList.remove('hidden');
-  errorContainer.innerHTML = ""
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-  setTimeout(validarTodo, 3000)
-  
-})
+  iniciandoSesion.classList.remove("hidden");
+  errorContainer.innerHTML = "";
 
+  setTimeout(validarTodo, 1000);
+});
 
+let valueInputEmail = inputEmail.value
+let valueInputPassword = inputPassword.value
 /* -------------------------------------------------------------------------- */
 /*                              funciones utiles                              */
 /* -------------------------------------------------------------------------- */
-function elimianarEspacio (input){
-  input.trim()
-}
 
-/* -------------------- funcion que muestras los errores -------------------- */
-function mostrarErrores (){
+
+/* -------------------- funcion que muestra los errores -------------------- */
+function mostrarErrores() {
   errorContainer.classList.remove("hidden");
-  
+
   errorContainer.innerHTML = `
-  <p> <small> Alguno de los datos ingresados son incorrectos </small> </p>`
+  <p> <small> Alguno de los datos ingresados son incorrectos </small> </p>`;
 }
 
 /* ------------- Funcion que oculta el form y muestra un mensaje de bienvenida ------------ */
-const h1 = document.querySelector('h1')
-function ocultarForm (){
+const h1 = document.querySelector("h1");
+function ocultarForm() {
   form.classList.add("hidden");
-  h1.innerText = "Bienvenido al sitio"
+  h1.innerText = "Bienvenido al sitio";
 }
 /* -------------------------------------------------------------------------- */
 // Paso a paso:
