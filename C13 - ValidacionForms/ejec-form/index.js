@@ -28,9 +28,6 @@ const baseDeDatos = {
   ],
 };
 
-// console.log(baseDeDatos.usuarios[0].name);
-// console.log(baseDeDatos.usuarios[1]);
-
 // ACTIVIDAD
 
 /* -------------------------------------------------------------------------- */
@@ -46,6 +43,10 @@ const iniciandoSesion = document.querySelector("#status-container #loader");
 const errorContainer = document.querySelector(
   "#status-container #error-container"
 );
+const h1 = document.querySelector("h1");
+const buttonVolver = document.querySelector('.button-volver')
+
+
 
 /* -------------------------------------------------------------------------- */
 /*                     NORMALIZAMOS EL EMAIL & CONTRASEÑA                     */
@@ -53,27 +54,6 @@ const errorContainer = document.querySelector(
 function eliminarEspacio(input) {
   return input.trim();
 }
-
-
-/* -------------------------------------------------------------------------- */
-
-function validarTodo() {
-  // console.log("Hola")
-  iniciandoSesion.classList.add("hidden");
-
-  if (validarEmail(valueInputEmail) && buscarEmail(valueInputEmail) && validarPassword(valueInputPassword) && buscarContraseña(eliminarEspacio(valueInputPassword))){
-     ocultarForm()
-  } else {
-     mostrarErrores();
-  }
-}
-
-  // if (validarPassword(valueInputPassword) && buscarContraseña(valueInputPassword)) {
-  //   ocultarForm();
-  // } else {
-  //   mostrarErrores();
-  // }
-// }
 
 /* -------------------------------------------------------------------------- */
 /*                                validar email & contaseña                            */
@@ -84,6 +64,7 @@ function validarEmail(email) {
   if (
     email.includes("@") &&
     email.length > 3 &&
+    email.length < 30 &&
     email.includes(".com") &&
     !email.includes(" ")
   ) {
@@ -92,8 +73,7 @@ function validarEmail(email) {
   return resultado;
 }
 
-console.log;
-
+/* -------------------------------------------------------------------------- */
 function validarPassword(password) {
   let resultado = false;
 
@@ -102,7 +82,6 @@ function validarPassword(password) {
   }
   return resultado;
 }
-/* -------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /*           funciones para buscar el mail y contraseña en el objeto          */
@@ -131,21 +110,76 @@ function buscarContraseña(valueInput) {
 
 /* -------------------------------------------------------------------------- */
 
+function validarTodo() {
+  // normalizo los datos ingresados y los guardo en una variable 👇
+  let valueInputEmail = eliminarEspacio(inputEmail.value);
+  let valueInputPassword = eliminarEspacio(inputPassword.value);
+
+  // oculto el texto "iniciando sesion" 👇
+  iniciandoSesion.classList.add("hidden");
+
+  // Valido si los datos ingresados están correctos y busco si coinciden el mail&password 👇
+  if (
+    validarEmail(valueInputEmail) &&
+    buscarEmail(valueInputEmail) &&
+    validarPassword(valueInputPassword) &&
+    buscarContraseña(eliminarEspacio(valueInputPassword))
+  ) {
+    ocultarForm();
+  } else {
+    mostrarErrores();
+  }
+
+ // reseteamos le form para que se limpien los inputs
+  form.reset();
+}
+
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   EVENTOS                                  */
+
+/* ------------------------- INPUT EMAIL & PASSWORD ------------------------- */
+inputEmail.addEventListener("input", function(evento){
+  
+  // si el mail que ingresamos cumple con las validaciones, se pondra verde el input. Si no se le quita la clase
+  if(validarEmail(inputEmail.value)){
+    inputEmail.classList.add('border-ok')
+    inputEmail.classList.remove('border-ok-red')
+  } else {
+    inputEmail.classList.remove('border-ok')
+    inputEmail.classList.add('border-ok-red')
+  }
+  
+})
+
+/* ------------------------------- FORM ------------------------------------------- */
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
+  // Le saco la clase hidden para que aparezca el mensaje de "iniciando sesion" 👇
   iniciandoSesion.classList.remove("hidden");
+
+  // Limpio los errores para que no se vuelvan a renderizar
   errorContainer.innerHTML = "";
 
+  // funcion que simula el asincronismo 👇
   setTimeout(validarTodo, 1000);
+
 });
 
-let valueInputEmail = inputEmail.value
-let valueInputPassword = inputPassword.value
+/* ------------------------------- BUTTON BACK ------------------------------ */
+buttonVolver.addEventListener('click', function(){
+  form.classList.remove('hidden')
+  buttonVolver.classList.add('hidden')
+})
+
+
+
 /* -------------------------------------------------------------------------- */
 /*                              funciones utiles                              */
 /* -------------------------------------------------------------------------- */
-
 
 /* -------------------- funcion que muestra los errores -------------------- */
 function mostrarErrores() {
@@ -156,10 +190,12 @@ function mostrarErrores() {
 }
 
 /* ------------- Funcion que oculta el form y muestra un mensaje de bienvenida ------------ */
-const h1 = document.querySelector("h1");
+
 function ocultarForm() {
   form.classList.add("hidden");
   h1.innerText = "Bienvenido al sitio";
+  buttonVolver.classList.remove('hidden')
+
 }
 /* -------------------------------------------------------------------------- */
 // Paso a paso:

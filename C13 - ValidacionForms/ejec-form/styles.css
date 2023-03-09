@@ -93,3 +93,28 @@ small {
 .hidden {
   display: none !important;
 }
+
+
+input:focus.border-ok {
+  outline: 2px solid green;
+}
+
+input:focus.border-ok-red{
+  outline: 2px solid red;
+}
+
+.button-volver {
+  margin-top: 20px;
+  background-color: royalblue;
+  color: rgb(113, 180, 12);
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 20px;
+  border: none;
+  border-radius: 25px;
+}
+
+.button-volver:hover {
+  background-color: rgb(62, 111, 255);
+  color: yellowgreen;
+}

@@ -86,21 +86,21 @@ formulario.addEventListener('submit', function (evento) {
     
     // simulamos conectar con el servidor 👇 // mas adelante los hacemos con promesas
     setTimeout(function () {
-
+        
         // simulamos la validacion dentro del servidor 👇
         if (correoValidado && contraseniaValidada && terminosValidados) {
             location.replace('/usuario.html')
-
+            
             // TODO: nos falta pasarle a la siguiente pagina las credenciales
             // para eso vamos a implementar local storage
         } else {
             //renderizar cambios 👇
             cajaErrores.innerHTML = listarErrores(erroresPresentes);
         }
-
+        
         // Limpiamos los ultimos errores
         erroresPresentes.length = 0;
-    }, 3500);
+    }, 1500);
 
 
 });
