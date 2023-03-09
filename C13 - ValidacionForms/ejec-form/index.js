@@ -197,6 +197,21 @@ function ocultarForm() {
   buttonVolver.classList.remove('hidden')
 
 }
+
+
+console.log(buttonVolver);
+
+function volverAlForm(){
+  form.classList.remove('hidden')
+  h1.innerText = "Iniciar Sesión"
+  buttonVolver.classList.add('hidden')
+  buttonVolver.classList.remove('hidden')
+
+}
+
+buttonVolver.addEventListener('click', function(){
+  volverAlForm()
+})
 /* -------------------------------------------------------------------------- */
 // Paso a paso:
 
