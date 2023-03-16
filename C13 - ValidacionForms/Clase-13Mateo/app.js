@@ -28,7 +28,8 @@ inputEmail.addEventListener('focus', function(){
 inputEmail.addEventListener('blur', function(){
     console.log("Se dispario el evento BLUR");
 });
-inputEmail.addEventListener('input', function(){
+inputEmail.addEventListener('input', function(evento){
+    // Si hacemos un console.log(evento) => podremos ver el inputEvent en consola. Ej: target (quien realizado ese evento)
     console.log("Se dispario el evento INPUT");
 
     // actualizamos el estado en cada cambio del input
@@ -46,6 +47,8 @@ inputEmail.addEventListener('input', function(){
     }else{
         inputEmail.classList.remove('border-red')
     }
+
+
 });
 
 inputPassword.addEventListener("input", function(){
@@ -142,7 +145,7 @@ function normalizarContrasenia(texto) {
 function validarEmail(email) {
     let resultado = false;
 
-    // let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+    
 
     // si pasa las pruebas lo damos por válido 👇
     if (email.includes('@') && email.includes('.') && !email.includes(' ') && email.length > 5) {
@@ -151,7 +154,7 @@ function validarEmail(email) {
         // agrego el mensaje correspondiente 👇
         erroresPresentes.push(errores.email);
     }
-    
+    // let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
     // EJEMPLO CON EXPRESION REGULAR 👇
     // if (regex.test(email)) {
     //     resultado = true;

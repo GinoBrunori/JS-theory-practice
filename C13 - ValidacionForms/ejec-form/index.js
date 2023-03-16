@@ -5,25 +5,25 @@ const baseDeDatos = {
       id: 1,
       name: "Steve Jobs",
       email: "steve@jobs.com",
-      password: "Steve123",
+      password: "@Steve123",
     },
     {
       id: 2,
       name: "Ervin Howell",
       email: "shanna@melissa.tv",
-      password: "Ervin345",
+      password: "@Ervin345",
     },
     {
       id: 3,
       name: "Clementine Bauch",
       email: "nathan@yesenia.net",
-      password: "Floppy39876",
+      password: "@Floppy39876",
     },
     {
       id: 4,
       name: "Patricia Lebsack",
       email: "julianne.oconner@kory.org",
-      password: "MysuperPassword345",
+      password: "@MysuperPassword345",
     },
   ],
 };
@@ -44,9 +44,7 @@ const errorContainer = document.querySelector(
   "#status-container #error-container"
 );
 const h1 = document.querySelector("h1");
-const buttonVolver = document.querySelector('.button-volver')
-
-
+const buttonVolver = document.querySelector(".button-volver");
 
 /* -------------------------------------------------------------------------- */
 /*                     NORMALIZAMOS EL EMAIL & CONTRASEÑA                     */
@@ -61,15 +59,22 @@ function eliminarEspacio(input) {
 function validarEmail(email) {
   let resultado = false;
 
-  if (
-    email.includes("@") &&
-    email.length > 3 &&
-    email.length < 30 &&
-    email.includes(".com") &&
-    !email.includes(" ")
-  ) {
+  // if (
+  //   email.includes("@") &&
+  //   email.length > 3 &&
+  //   email.length < 30 &&
+  //   email.includes(".com") &&
+  //   !email.includes(" ")
+  // ) {
+  //   resultado = true;
+  // }
+
+  let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+  // EJEMPLO CON EXPRESION REGULAR 👇
+  if (regex.test(email)) {
     resultado = true;
   }
+
   return resultado;
 }
 
@@ -77,9 +82,17 @@ function validarEmail(email) {
 function validarPassword(password) {
   let resultado = false;
 
-  if (password.length > 5) {
+  // if (password.length > 5) {
+  //   resultado = true;
+  // }
+  
+  // La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
+  
+  let regex = new RegExp("^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$");
+  if (regex.test(password)) {
     resultado = true;
   }
+
   return resultado;
 }
 
@@ -125,13 +138,14 @@ function validarTodo() {
     validarPassword(valueInputPassword) &&
     buscarContraseña(eliminarEspacio(valueInputPassword))
   ) {
-    ocultarForm();
+    // ocultarForm();
+    location.replace("./usuario.html");
+    form.reset();
   } else {
     mostrarErrores();
   }
 
- // reseteamos le form para que se limpien los inputs
-  form.reset();
+  // reseteamos le form para que se limpien los inputs
 }
 
 /* -------------------------------------------------------------------------- */
@@ -140,18 +154,28 @@ function validarTodo() {
 /*                                   EVENTOS                                  */
 
 /* ------------------------- INPUT EMAIL & PASSWORD ------------------------- */
-inputEmail.addEventListener("input", function(evento){
-  
+
+inputEmail.addEventListener("input", function (evento) {
   // si el mail que ingresamos cumple con las validaciones, se pondra verde el input. Si no se le quita la clase
-  if(validarEmail(inputEmail.value)){
-    inputEmail.classList.add('border-ok')
-    inputEmail.classList.remove('border-ok-red')
+
+  if (validarEmail(inputEmail.value)) {
+    inputEmail.classList.add("border-ok");
+    inputEmail.classList.remove("border-ok-red");
   } else {
-    inputEmail.classList.remove('border-ok')
-    inputEmail.classList.add('border-ok-red')
+    inputEmail.classList.remove("border-ok");
+    inputEmail.classList.add("border-ok-red");
   }
-  
-})
+});
+
+inputPassword.addEventListener("input", function () {
+  if (validarPassword(inputPassword.value)) {
+    inputPassword.classList.add("border-ok");
+    inputPassword.classList.remove("border-ok-red");
+  } else {
+    inputPassword.classList.remove("border-ok");
+    inputPassword.classList.add("border-ok-red");
+  }
+});
 
 /* ------------------------------- FORM ------------------------------------------- */
 
@@ -166,16 +190,13 @@ form.addEventListener("submit", function (e) {
 
   // funcion que simula el asincronismo 👇
   setTimeout(validarTodo, 1000);
-
 });
 
 /* ------------------------------- BUTTON BACK ------------------------------ */
-buttonVolver.addEventListener('click', function(){
-  form.classList.remove('hidden')
-  buttonVolver.classList.add('hidden')
-})
-
-
+buttonVolver.addEventListener("click", function () {
+  form.classList.remove("hidden");
+  buttonVolver.classList.add("hidden");
+});
 
 /* -------------------------------------------------------------------------- */
 /*                              funciones utiles                              */
@@ -185,8 +206,28 @@ buttonVolver.addEventListener('click', function(){
 function mostrarErrores() {
   errorContainer.classList.remove("hidden");
 
-  errorContainer.innerHTML = `
-  <p> <small> Alguno de los datos ingresados son incorrectos </small> </p>`;
+  if (validarPassword(inputPassword.value)) {
+    mostrarErroresDePassword();
+  }
+
+  if (validarEmail(inputEmail.value)) {
+    mostrarErroresEmail();
+  }
+  // errorContainer.innerHTML = `
+  // <p> <small> Alguno de los datos ingresados son incorrectos </small> </p>`;
+}
+
+function mostrarErroresEmail() {
+  return (errorContainer.innerHTML += `
+  <p> <small> El mail ingresado es incorrecto  </small> </p
+  `);
+}
+
+function mostrarErroresDePassword() {
+  // errorContainer.classList.remove("hidden");
+  return (errorContainer.innerHTML += `
+  <p> <small> La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. </small> </p>
+  <p> <small> NO puede tener otros símbolos. </small> </p>`);
 }
 
 /* ------------- Funcion que oculta el form y muestra un mensaje de bienvenida ------------ */
@@ -194,21 +235,19 @@ function mostrarErrores() {
 function ocultarForm() {
   form.classList.add("hidden");
   h1.innerText = "Bienvenido al sitio";
-  buttonVolver.classList.remove('hidden')
-
+  buttonVolver.classList.remove("hidden");
 }
 
-
-function volverAlForm(){
-  form.classList.remove('hidden')
-  h1.innerText = "Iniciar Sesión"
-  buttonVolver.classList.add('hidden')
+function volverAlForm() {
+  form.classList.remove("hidden");
+  h1.innerText = "Iniciar Sesión";
+  buttonVolver.classList.add("hidden");
 }
 
-buttonVolver.addEventListener('click', function(){
+buttonVolver.addEventListener("click", function () {
   // buttonVolver.classList.add('hidden')
-  volverAlForm()
-})
+  volverAlForm();
+});
 /* -------------------------------------------------------------------------- */
 // Paso a paso:
 
