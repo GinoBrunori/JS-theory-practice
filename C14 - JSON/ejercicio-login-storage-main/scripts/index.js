@@ -5,40 +5,38 @@ const baseDeDatos = {
       id: 1,
       name: "Steve Jobs",
       email: "steve@jobs.com",
-      password: "Steve1234",
+      password: "Steve123",
     },
     {
       id: 2,
       name: "Ervin Howell",
       email: "shanna@melissa.tv",
-      password: "@Ervin345",
+      password: "Ervin345",
     },
     {
       id: 3,
       name: "Clementine Bauch",
       email: "nathan@yesenia.net",
-      password: "@Floppy39876",
+      password: "Floppy39876",
     },
     {
       id: 4,
       name: "Patricia Lebsack",
       email: "julianne.oconner@kory.org",
-      password: "@MysuperPassword345",
+      password: "MysuperPassword345",
     },
   ],
 };
 
-// ACTIVIDAD
+/* -------------------------------------------------------------------------- */
+/*                              CAPTURO LOS NODOS                             */
+/* -------------------------------------------------------------------------- */
 
-/* -------------------------------------------------------------------------- */
-/*                              capturo los nodos                             */
-/* -------------------------------------------------------------------------- */
 const form = document.querySelector("form");
 const inputEmail = document.querySelector(".input-container #email-input");
 const inputPassword = document.querySelector(
   ".input-container #password-input"
 );
-
 const iniciandoSesion = document.querySelector("#status-container #loader");
 const errorContainer = document.querySelector(
   "#status-container #error-container"
@@ -59,21 +57,21 @@ function eliminarEspacio(input) {
 function validarEmail(email) {
   let resultado = false;
 
-  // if (
-  //   email.includes("@") &&
-  //   email.length > 3 &&
-  //   email.length < 30 &&
-  //   email.includes(".com") &&
-  //   !email.includes(" ")
-  // ) {
-  //   resultado = true;
-  // }
-
-  let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
-  // EJEMPLO CON EXPRESION REGULAR 👇
-  if (regex.test(email)) {
+  if (
+    email.includes("@") &&
+    email.length > 3 &&
+    email.length < 30 &&
+    // email.includes(".com") &&
+    !email.includes(" ")
+  ) {
     resultado = true;
   }
+
+  // let regex = new RegExp("[a-z0-9]+@[a-z]+.[a-z]{2,3}");
+  // // EJEMPLO CON EXPRESION REGULAR 👇
+  // if (regex.test(email)) {
+  //   resultado = true;
+  // }
 
   return resultado;
 }
@@ -82,20 +80,20 @@ function validarEmail(email) {
 function validarPassword(password) {
   let resultado = false;
 
-  // if (password.length > 5) {
-  //   resultado = true;
-  // }
+  if (password.length > 5) {
+    resultado = true;
+  }
 
   // La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
 
   // let regex = new RegExp("^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$");
 
   // regex for a basic password must be more than 8 chars
-  const regex = /^[A-Za-z0-9]\w{8,15}$/;
+  // const regex = /^[A-Za-z0-9]\w{8,15}$/;
 
-  if (regex.test(password)) {
-    resultado = true;
-  }
+  // if (regex.test(password)) {
+  //   resultado = true;
+  // }
 
   return resultado;
 }
@@ -142,8 +140,8 @@ function validarTodo() {
     validarPassword(valueInputPassword) &&
     buscarContraseña(eliminarEspacio(valueInputPassword))
   ) {
-    // ocultarForm();
-    location.replace("./usuario.html");
+    ocultarForm(valueInputEmail);
+    // location.replace("./usuario.html");
     form.reset();
   } else {
     mostrarErrores();
@@ -188,6 +186,14 @@ inputPassword.addEventListener("input", function () {
   }
 });
 
+inputEmail.addEventListener('focus', function(){
+  inputEmail.classList.add('border-blue-focus')
+
+})
+
+inputPassword.addEventListener('focus', function(){
+  inputPassword.classList.add('border-blue-focus')
+})
 /* ------------------------------- FORM ------------------------------------------- */
 
 form.addEventListener("submit", function (e) {
@@ -199,8 +205,6 @@ form.addEventListener("submit", function (e) {
   // Limpio los errores para que no se vuelvan a renderizar
   errorContainer.innerHTML = "";
 
-  // limpio el storage
-  limpiarStorage();
   // funcion que simula el asincronismo 👇
   setTimeout(validarTodo, 1000);
 });
@@ -209,7 +213,17 @@ form.addEventListener("submit", function (e) {
 buttonVolver.addEventListener("click", function () {
   form.classList.remove("hidden");
   buttonVolver.classList.add("hidden");
+  volverAlForm();
+  limpiarStorage();
 });
+
+
+/* -------------------------------------------------------------------------- */
+// buttonVolver.addEventListener("click", function () {
+//   // buttonVolver.classList.add('hidden')
+  
+// });
+
 
 /* -------------------------------------------------------------------------- */
 /*                              funciones utiles                              */
@@ -223,66 +237,66 @@ function mostrarErrores() {
   <p> <small> Alguno de los datos ingresados son incorrectos </small> </p>`;
 }
 
-/* ------------- Funcion que oculta el form y muestra un mensaje de bienvenida ------------ */
+/* ------------- Funcion que oculta el form y muestra un mensaje de bienvenida con el nombre de user ------------ */
 
-function ocultarForm() {
+function ocultarForm(valueInputEmail) {
   form.classList.add("hidden");
-  h1.innerText = "Bienvenido al sitio";
+
+  baseDeDatos.usuarios.forEach((user) => {
+    if (valueInputEmail === user.email) {
+      h1.innerText = `Bienvenido al sitio ${user.name} ☺`;
+    }
+  });
   buttonVolver.classList.remove("hidden");
 }
 
+/* ------------------- funcion para aplicarle A UN BOTTON ------------------- */
 function volverAlForm() {
   form.classList.remove("hidden");
   h1.innerText = "Iniciar Sesión";
   buttonVolver.classList.add("hidden");
+  
 }
 
-buttonVolver.addEventListener("click", function () {
-  // buttonVolver.classList.add('hidden')
-  volverAlForm();
-});
 
-
-function limpiarStorage() {
-  sessionStorage.setItem('mail', "")
-  sessionStorage.setItem('pass', "")
-}
 /* -------------------------------------------------------------------------- */
+function limpiarStorage() {
+  sessionStorage.setItem("mail", "");
+  sessionStorage.setItem("pass", "");
+}
+
+// ACTIVIDAD
+
 // Paso a paso:
 
-// 1) Escuchar el evento necesario para reaccionar cuando la persona
-// haga click en el botón iniciar sesión.
+// 1) Al momento de que la persona inicia sesión, si las validaciones que ya tenemos implementadas
+// han sido exitosas, deberemos almacenar la información del usuario en el LocalStorage.
 
-// 2) El proceso de inicio de sesión deberá tener una demora de 3 segundos.
-// Deberás agregar la función correspondiente para simular dicha demora.
+// 2) Al mensaje de bienvenida que ya teníamos implementado, deberemos agregarle el nombre de la
+// persona y un botón de "Cerrar Sesión".
 
-// 3) Durante el tiempo indicado anteriormente, se deberá mostrar el mensaje "Iniciando sesión..."
+// 3) Una vez iniciada la sesión, la misma se deberá mantener en ese estado para el caso de que la persona
+// recargue la página. Para ello, deberás validar si existe información del usuario al momento en
+// que se produce la carga de la página, y en base a dicha condción decidir que elementos mostrar.
 
-// 4) A partir de los inputs ingresados en el formulario, se deberan realizar las siguientes validaciones:
-// 1) Que el primer input sea un email válido.
-// 2) Que la contraseña tenga al menos 5 caracteres.
-// 3) Que los datos ingresados corresponden a una
-// persona que se encuentre registrada en la base de datos.
-// En caso de que alguna de las validaciones no sea exitosa,
-// se deberá mostrar un mensaje de error que diga "Alguno de los datos ingresados son incorrectos"
-
-// 5) En caso de que los datos ingresados sean correctos, se deberá ocultar el formulario y mostrar
-// un mensaje de bienvenida al sitio.
+// 3) Para el caso de que la persona haga click en el botón "Cerrar Sesión", se deberá eliminar
+// la información del usuario, mostrar un mensaje indicando que se ha cerrado la sesión, y recargar
+// la página para mostrar nuevamente el formulario de login.
 
 /* 
 TIPS:
-  - Puedes averiguar acerca de la manera de validar el formato de un email utilizando Javascript, buscando
-    en internet frases como "Validar email con Javascript o similar".
+  - Para lograr los objetivos de este ejercicio, deberás valerte de algunos eventos y métodos que vimos en
+    las clases anteriores. Te invitamos a que revises los recursos en caso de que tengas dudas, ya que allí
+    encontrarás todas las respuestas que necesitas para completar la actividad.
 
   - Recuerda que puedes seleccionar y manipular los elementos del archivo index.html, usando los
     recursos que Javascript te ofrece para ello. Además, en el archivo styles.css tiene algunas clases y 
     estilos predefinidos para ayudarte a completar la actividad.
 
-  - También te dejamos algunos mensajes que te pueden ser de utilidad:
-  
-   Mensaje de error => <small>Alguno de los datos ingresados son incorrectos</small>
-
-   Mensaje de bienvenida => "<h1> Bienvenido al sitio 😀 </h1>";
+  - Al momento de guardar información del usuario en el navegador, recuerda que debemos almacenar solo la 
+    información necesaria, y EN NINGUN CASO DEBEMOS GUARDAR LA CONTRASEÑA. Por ello, deberás seleccionar y
+    separar la información que tienes que almacenar, a partir del objeto que contiene la información del 
+    usuario.
 
    ¡Manos a la obra!
  */
